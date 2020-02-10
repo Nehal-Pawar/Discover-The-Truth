@@ -18,6 +18,13 @@ This data set contains tweets from year 2017. Dataset format is json.
 ![github-small](https://github.com/Nehal-Pawar/Discover-The-Truth/blob/master/Images/Datapipeline.PNG)
 
 ### Engineering Challenge
-Challenge 1: 
+Challenge 1: Collect data from multiple sources and arrange in same format. Data from news is in comma seperated .csv format.
+Twitter is in json format.
+
+Challenge 2: Feed data to a Database that accepts key value pair with a fature that can accept new columns later.
+It should also support search over a column 
 ## Future Scope
+1. Add Real time news and twitter APIs to make app reaal time. Also add search APIs for news,twitter and youtube
+2. Search Bar: Add serach bar to the UI that should take keywords and a collection of multiple keywords for same topic
+
 
