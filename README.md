@@ -15,7 +15,7 @@ id, title, Publication name, Author name, Date of publication, Year of publicati
 Twitter :https://archive.org/search.php?query=archiveteam-twitter-stream
 This data set contains tweets from year 2017. Dataset format is json.
 ## Architecture
-
+![github-small](https://github.com/Nehal-Pawar/Discover-The-Truth/blob/master/Images/Datapipeline.PNG)
 
 ### Engineering Challenge
 
