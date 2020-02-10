@@ -11,6 +11,7 @@ People get manipulated by different news channel by presenting news from differe
 Kaggal News : https://www.kaggle.com/snapcrack/all-the-news
 This dataset contains news for 2015-2017 from 14 different American news channel. Dataset is in comma seperated CSV format.
 id, title, Publication name, Author name, Date of publication, Year of publication, Month of publication, URL for article (not available for all articles), Article content
+#
 Twitter :https://archive.org/search.php?query=archiveteam-twitter-stream
 This data set contains tweets from year 2017. Dataset format is json.
 ## Architecture
