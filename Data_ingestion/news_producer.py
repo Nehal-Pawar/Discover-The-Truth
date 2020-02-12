@@ -1,11 +1,10 @@
 ############################################################
 # This python script is a producer for kafka.
-# To send it to kafka, each record is first converted to
-# string then to bytes using str.encode('utf-8') method.
+# To send it to kafka, each csv is read into pandas DF to
+# and the row by row each recorded is converted in to json
 #
-# The parameters
-# config.KAFKA_SERVERS: public DNS and port of the servers
-# were written in a separate "config.py".
+# 
+# KafkaPorducer sends each json to kafka cluster
 ############################################################
 
 
@@ -15,15 +14,21 @@ import time
 import pandas as pd 
 import json
 import os
+
 def main():
-    entries = os.listdir('../../home/')
-    for entry in entries:
-        data = pd.read_csv("../../home/"+entry) 
+    #read all file names in the directory
+    files = os.listdir('../../home/')
+    # iterate for each file name 
+    for file in files:
+        #read .csv file in datafarame to keep formating
+        data = pd.read_csv("../../home/"+file) 
         print(data.head())
+        #convert to dictionary
         dict_news=data.to_dict(orient='records')
-        
+        # kafka producer install required packages
         producer = KafkaProducer(bootstrap_servers = 'ip-10-0-0-37.us-west-2.compute.internal:9092,ip-10-0-0-12.us-west-2.compute.internal:9092,.internal:9092,ip-10-0-0-20.us-west-2.compute.internal:9092')
         #i=0
+        #send each dict to kafka cluster
         for key in dict_news:
             #i=i+1
             #if i > 3000:
@@ -32,5 +37,4 @@ def main():
             producer.flush()
             
 if __name__ == '__main__':
-
     main()
