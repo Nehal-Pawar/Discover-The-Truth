@@ -1,3 +1,13 @@
+############################################################
+# This python script is a spark streaming comsumer.
+# comming from kafka, 2 topics news and twitter
+# 
+#
+# parameter
+# config.py file to get AWS access key and secret keys
+# each streaming row from data frame is send to dynamoDB
+############################################################
+
 from pyspark import SparkConf, SparkContext
 #from pyspark.streaming import StreamingContext
 from pyspark.sql.types import *
@@ -62,20 +72,21 @@ def get_dynamodb():
                  region_name=region)
 
 def main():             
-    #sc = SparkContext()
-    #sqlContext = SQLContext(sc)
+    # news topics acting as keyword 
     topics=["2016 presidential election","gunman opens fire","U.S.-Mexico border","refugees of the Syrian Civil War","Syrian Civil War","African-American","45th President","Chelsea Manning's"]
     spark = SparkSession.builder.appName('abc').getOrCreate()
-
+    # reading data from kafka 
     df = spark \
       .readStream \
       .format("kafka") \
       .option("kafka.bootstrap.servers", "10.0.0.37:9092,10.0.0.12:9092,10.0.0.20:9092") \
       .option("subscribe", "news,twitter") \
       .load()
-
-    df_news=df.filter(col("topic").rlike("news")) 
+    # filtering news topic from kafka stream
+    df_news=df.filter(col("topic").rlike("news"))
+    # casting columns to string 
     df_news_1 = df_news.selectExpr("CAST(value AS STRING)","CAST(topic AS STRING)")
+    
     df_news_2=df_news_1.select(df_news_1.topic,F.from_json(F.col("value"),"id int, title string, publication string, author string, date date, year float, month float, url string, content string").alias("json"))
         
 
