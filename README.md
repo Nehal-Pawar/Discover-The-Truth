@@ -30,5 +30,6 @@ It should also support search over a column
 3. Do ordering of the news and tweets and youtube videos in an unbiased way
 4. Improve search algorithm by using google keyword planner
 5. Search Bar: Add serach bar to the UI that should take keywords and a collection of multiple keywords (from google keyword planner) for same topic
+6. Implement NLP to find sentiment of an article
 
 
