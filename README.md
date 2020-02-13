@@ -6,7 +6,7 @@ Slides are [here](https://docs.google.com/presentation/d/1c45UHFSGbUHCeABy1eteTT
 
 Video demo [here](https://www.youtube.com/watch?v=5J-iZ33vWjg)
 ## Introduction to Project Idea
-People get manipulated by different news channel by presenting news from different point of views skipping important points which stay in their favour. The idea of this project is to get news from different sources and put them together in one place where everyone can read everyones point of view and get a complete picture. 
+People get manipulated by different news channel. Different News media are presenting news from different point of views. Some of which is true and some of it is news channels personal view. In all this biased news reporting important news get shadowed and biased is formed by highliting same news from a different point of view to manipulate people in desired direction. The idea of this project is to get news from different sources and put them together in one place where everyone can read everyones point of view and get a complete picture. It also includes public opinion from twitter.
 
 ## DataSet
 Kaggal News : https://www.kaggle.com/snapcrack/all-the-news
