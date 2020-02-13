@@ -25,7 +25,10 @@ Twitter is in json format.
 Challenge 2: Feed data to a Database that accepts key value pair with a fature that can accept new columns later.
 It should also support search over a column 
 ## Future Scope
-1. Add Real time news and twitter APIs to make app reaal time. Also add search APIs for news,twitter and youtube
-2. Search Bar: Add serach bar to the UI that should take keywords and a collection of multiple keywords for same topic
+1. Add Real time news and twitter APIs to make app real time. Also add search APIs for news,twitter and youtube
+2. Increase the range from America's news to World/International News
+3. Do ordering of the news and tweets and youtube videos in an unbiased way
+4. Improve search algorithm by using google keyword planner
+5. Search Bar: Add serach bar to the UI that should take keywords and a collection of multiple keywords (from google keyword planner) for same topic
 
 
