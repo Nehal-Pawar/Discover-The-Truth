@@ -2,7 +2,8 @@
 
 #### Getting birdview on news
 
-Slides are here
+Slides are [here](https://docs.google.com/presentation/d/1c45UHFSGbUHCeABy1eteTTe3eDqkZjBM/edit?dls=true)
+
 Video demo here
 ## Introduction to Project Idea
 People get manipulated by different news channel by presenting news from different point of views skipping important points which stay in their favour. The idea of this project is to get news from different sources and put them together in one place where everyone can read everyones point of view and get a complete picture. 
