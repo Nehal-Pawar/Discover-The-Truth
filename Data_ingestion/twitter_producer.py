@@ -20,8 +20,7 @@ import sys
 sys.path.insert(1, '/home/ubuntu/')
 from config import (aws_access_key, aws_secret_key)
 # Kafka Producer 
-producer = KafkaProducer(bootstrap_servers = 'localhost:9092',
-                         value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+producer = KafkaProducer(bootstrap_servers = 'ip-10-0-0-37.us-west-2.compute.internal:9092,ip-10-0-0-12.us-west-2.compute.internal:9092,ip-10-0-0-20.us-west-2.compute.internal:9092',value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
 s3 = boto3.resource('s3',aws_access_key_id = aws_access_key , aws_secret_access_key = aws_secret_key)
 
