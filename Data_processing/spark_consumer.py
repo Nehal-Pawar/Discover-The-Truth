@@ -61,7 +61,12 @@ class SendToDynamoDB_ForeachWriter:
       raise err
 
 def get_dynamodb():
-
+  '''
+  Class to connect to DynamoDB.
+  It access teh access key and secret key and conects to resource 
+  dynamoDB returning boto3 object 
+  which gets used i open methid of class SendToDynamoDB_ForeachWriter
+  '''
   access_key = aws_access_key
   secret_key = aws_secret_key
 
@@ -82,14 +87,15 @@ def main():
       .option("kafka.bootstrap.servers", "10.0.0.37:9092,10.0.0.12:9092,10.0.0.20:9092") \
       .option("subscribe", "news,twitter") \
       .load()
+    
+    
     # filtering news topic from kafka stream
     df_news=df.filter(col("topic").rlike("news"))
     # casting columns to string 
     df_news_1 = df_news.selectExpr("CAST(value AS STRING)","CAST(topic AS STRING)")
-    
+    # convert json column value to multiple columns using pyspark functions
     df_news_2=df_news_1.select(df_news_1.topic,F.from_json(F.col("value"),"id int, title string, publication string, author string, date date, year float, month float, url string, content string").alias("json"))
-        
-
+    # create new D
     df_news_3=df_news_2.select(F.col("json").getItem("id").alias('id'),F.col("json").getItem("date").alias('date'),df_news_2.topic,F.col("json").getItem("title").alias('title'),F.col("json").getItem("publication").alias('publication'),F.col("json").getItem("author").alias('author'),F.col("json").getItem("year").alias('year'),F.col("json").getItem("month").alias('url'),F.col("json").getItem("content").alias('content'))
 
     df_news_5=df_news_3.filter(col("json.year").rlike("2017") & (col("json.month").rlike("1") | col("json.month").rlike("2")))
@@ -103,7 +109,7 @@ def main():
     
 
 
-
+    #filtering twitter topic from kafka stream
     df_twitter=df.filter(col("topic").rlike("twitter")) 
     df_twitter_value = df_twitter.selectExpr("CAST(value AS STRING)","CAST(topic AS STRING)")
     df_twitter_2=df_twitter_value.select(df_twitter_value.topic,F.from_json(F.col("value"),"text string,created_at string, entities string, favourite_count int, retweet_count int, user string").alias("tweet"))
