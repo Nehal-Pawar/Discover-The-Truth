@@ -95,41 +95,43 @@ def main():
     df_news_1 = df_news.selectExpr("CAST(value AS STRING)","CAST(topic AS STRING)")
     # convert json column value to multiple columns using pyspark functions
     df_news_2=df_news_1.select(df_news_1.topic,F.from_json(F.col("value"),"id int, title string, publication string, author string, date date, year float, month float, url string, content string").alias("json"))
-    # create new D
+    # create new Dataframe out of the value column
     df_news_3=df_news_2.select(F.col("json").getItem("id").alias('id'),F.col("json").getItem("date").alias('date'),df_news_2.topic,F.col("json").getItem("title").alias('title'),F.col("json").getItem("publication").alias('publication'),F.col("json").getItem("author").alias('author'),F.col("json").getItem("year").alias('year'),F.col("json").getItem("month").alias('url'),F.col("json").getItem("content").alias('content'))
-
+    # filter news for january and feb month
     df_news_5=df_news_3.filter(col("json.year").rlike("2017") & (col("json.month").rlike("1") | col("json.month").rlike("2")))
-        
-    df_news_6=df_news_5.withColumn('keyword',F.regexp_extract('content','|'.join(topics) , 0))#.show()    
+    # tag rows with keyword that match regular expression defined by topic in list
+    df_news_6=df_news_5.withColumn('keyword',F.regexp_extract('content','|'.join(topics) , 0))
+    # only keep rows that are tagged by some topics
     df_news_7=df_news_6.filter(col('keyword').isin(topics))
- 
+    # stream the result to output console
     query=df_news_7.writeStream.format("console").start()
     df_news_7.printSchema()
- 
-    
-
+  
+    #########Twitter###########
 
     #filtering twitter topic from kafka stream
     df_twitter=df.filter(col("topic").rlike("twitter")) 
+    # casting columns to string 
     df_twitter_value = df_twitter.selectExpr("CAST(value AS STRING)","CAST(topic AS STRING)")
+    # convert json column value to multiple columns using pyspark functions
     df_twitter_2=df_twitter_value.select(df_twitter_value.topic,F.from_json(F.col("value"),"text string,created_at string, entities string, favourite_count int, retweet_count int, user string").alias("tweet"))
-    col_list_1=["text","entities","favourite_count","retweet_count","user"]
-
+    #col_list_1=["text","entities","favourite_count","retweet_count","user"]
+    # create new Dataframe out of the value column
     df_t_3=df_twitter_2.select(df_twitter_2.topic,F.col("tweet").getItem("user").alias('user'),F.col("tweet").getItem("created_at").alias('date'),F.col("tweet").getItem("text").alias('text'),F.col("tweet").getItem("entities").alias('entities'),F.col("tweet").getItem("favourite_count").alias('favourite_count'),F.col("tweet").getItem("retweet_count").alias('retweet_count'))
-
+    # level 2 json to column
     df_t_4=df_t_3.select(df_t_3.topic,df_t_3.date,df_t_3.text,df_t_3.favourite_count,df_t_3.retweet_count,F.from_json(F.col("user"),"id string, name string, friend_count int, verified boolean, followers_count int").alias("user"))
-
-            
+    # create new Dataframe out of the value column            
     df_twitter_5=df_t_4.select(F.col("user").getItem("id").alias('id'),df_t_4.date,df_t_4.topic, df_t_4.text,df_t_4.favourite_count,df_t_4.retweet_count,F.col("user").getItem("name").alias('name'),F.col("user").getItem("friend_count").alias('friend_count'),F.col("user").getItem("verified").alias('verified'),F.col("user").getItem("followers_count").alias('followers_count'))
-
-    
-    df_t_6=df_twitter_5.withColumn('keyword',F.regexp_extract('text',  '|'.join(topics) , 0))#.show()    
+    # tag rows with keyword that match regular expression defined by topic in list
+    df_t_6=df_twitter_5.withColumn('keyword',F.regexp_extract('text',  '|'.join(topics) , 0))
+    # only keep rows that are tagged by some topics
     df_t_7=df_t_6.filter(col('keyword').isin(topics))
+    # stream the result to output console
     query=df_t_7.writeStream.format("console").option('numRows','20').option('truncate','false').start()
     df_t_7.printSchema()
-     
+    # stream output Dataframe to DynamoDB News
     query=df_news_7.writeStream.foreach(SendToDynamoDB_ForeachWriter()).outputMode("update").start()
-
+    # stream output Dataframe to DynamoDB Twitter
     query=df_t_7.writeStream.foreach(SendToDynamoDB_ForeachWriter()).outputMode("update").start()
     query.awaitTermination()
 
