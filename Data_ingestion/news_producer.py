@@ -26,7 +26,7 @@ def main():
         #convert to dictionary
         dict_news=data.to_dict(orient='records')
         # kafka producer install required packages
-        producer = KafkaProducer(bootstrap_servers = 'ip-10-0-0-37.us-west-2.compute.internal:9092,ip-10-0-0-12.us-west-2.compute.internal:9092,.internal:9092,ip-10-0-0-20.us-west-2.compute.internal:9092')
+        producer = KafkaProducer(bootstrap_servers = 'ip-10-0-0-37.us-west-2.compute.internal:9092,ip-10-0-0-12.us-west-2.compute.internal:9092,ip-10-0-0-20.us-west-2.compute.internal:9092')
         #i=0
         #send each dict to kafka cluster
         for key in dict_news:
