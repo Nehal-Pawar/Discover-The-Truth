@@ -85,6 +85,7 @@ def main():
       .readStream \
       .format("kafka") \
       .option("kafka.bootstrap.servers", "10.0.0.37:9092,10.0.0.12:9092,10.0.0.20:9092") \
+      .option("auto.offset.reset","earliest")\
       .option("subscribe", "news,twitter") \
       .load()
     
