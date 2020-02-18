@@ -28,7 +28,7 @@ item = response['Items']
 #print(getList(item[0]))
 #print(item[0])
 
-column=['keyword','id','author','content','date','publication','title','topic','name','text']
+column=['topic','keyword','date','publication','title','content','author','name','text','id']
 dtgood = dash_table.DataTable(
 
     id='datatablegood',
