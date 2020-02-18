@@ -51,7 +51,7 @@ class SendToDynamoDB_ForeachWriter:
     # A more efficient implementation can be to send batches of rows at a time.
 
     if row["topic"]=="twitter":
-        self.dynamodb.Table(table_name).put_item(Item = { 'id': int(row['id']), 'topic': row['topic'],'keyword':row['keyword'],'date':str(row['date']),'text':row['text'],'name':row['name'] })
+        self.dynamodb.Table(table_name).put_item(Item = { 'id': int(row['id']), 'topic': row['topic'],'keyword':row['keyword'],'date':str(row['date']),'content':row['text'],'author':row['name'] })
     elif row["topic"]=="news": 
         self.dynamodb.Table(table_name).put_item(Item = { 'id': int(row['id']), 'topic': row['topic'],'keyword':row['keyword'],'date':str(row['date']),'title':row['title'],'publication':row['publication'],'author':row['author'],'content':row['content']})
 
