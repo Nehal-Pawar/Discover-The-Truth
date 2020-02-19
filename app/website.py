@@ -1,3 +1,13 @@
+############################################################
+# This python script is a web Dash for Displaying.
+# It reads data from DynamoDB 
+# Displays it in table format 
+# Based on dropdown selection you made
+# 
+############################################################
+
+
+
 # -*- coding:utf-8 -*-
 import dash
 import dash_core_components as dcc
@@ -9,6 +19,7 @@ import dash_table
 import sys
 sys.path.insert(1, '/home/ubuntu/')
 
+#Read aws keys form config file
 from config import (aws_access_key, aws_secret_key)
 PAGE_SIZE = 20
 table_name="mytable6"
@@ -17,18 +28,22 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
+#create boto3 object to access dynamoDB from AWS
 dynamodb = boto3.resource('dynamodb',aws_access_key_id=aws_access_key ,aws_secret_access_key= aws_secret_key,region_name='us-west-2')
 table = dynamodb.Table(table_name)
-#response = table.query(IndexName="keyword-rank-index", KeyConditionExpression=Key('keyword').eq('trump'))
-def getList(dict): 
-    return dict.keys() 
-
-response = table.query(KeyConditionExpression=Key('keyword').eq('2016 presidential election'))
+response = table.query(KeyConditionExpression=Key('keyword').eq('Syrian Civil War'))
 item = response['Items']
 #print(getList(item[0]))
 #print(item[0])
 
+# Function to return all keys from table retrived
+def getList(dict): 
+    return dict.keys() 
+
+# select columns from tabel
 column=['topic','keyword','date','publication','title','content','author','name','text','id']
+
+# Display settings
 dtgood = dash_table.DataTable(
 
     id='datatablegood',
@@ -54,6 +69,8 @@ dtgood = dash_table.DataTable(
 
 )
 
+# app layout 
+
 app.layout = html.Div( children=[
     dcc.Markdown('''News'''),
     html.H1(children='Discover The Truth'),
@@ -71,8 +88,6 @@ options=[
 
 {'label': 'Syrian Civil War', 'value': 'Syrian Civil War'},
 
-#{'label': 'Chelsea Manning\'s', 'value': 'Chelsea Manning\'s'}
-
 ],
 
 #value='17362'
@@ -84,17 +99,16 @@ options=[
 
 ])
 
+# call back funtion input and output
 @app.callback(
-
     dash.dependencies.Output('datatablegood', 'data'),
-    #dash.dependencies.Output('table_models', 'data'),
-
+    
     [dash.dependencies.Input('demo-dropdown', 'value')])
 
+# function to return table based on selected table 
 def updateoutput(value):
 
     response = table.query(KeyConditionExpression=Key('keyword').eq(value))
-    #item = response['Items']
     # Get the service resource.
     return response['Items']  #'You have selected "{}"'.format(listToStr)
 
