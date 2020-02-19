@@ -34,11 +34,19 @@ dtgood = dash_table.DataTable(
     id='datatablegood',
     style_data={
 
-        'whiteSpace': 'normal',
+        'minWidth': '0px',  'maxWidth': '220px',
+        #'whiteSpace': 'normal',
+        #'textOverflow': 'ellipsis',
 
-        'height': 'auto'
+        'height': '50px',
+        'overflow': 'hidden'
 
     },
+    style_cell_conditional=[
+        {'if': {'column_id': 'date'},
+         'maxWidth': '30px'},
+    ],
+    #style_cell={       'minWidth': '0px',  'maxWidth': '280px',        'overflow': 'hidden',        'textOverflow': 'ellipsis',        'height':'100px'    },
 
     columns=[{"name":str(i), "id":str(i)} for i in column],
 
@@ -57,13 +65,13 @@ options=[
 
 {'label': '2016 presidential election', 'value': '2016 presidential election'},
 
-{'label': 'gunman opens fire', 'value': 'gunman opens fire'},
+#{'label': 'gunman opens fire', 'value': 'gunman opens fire'},
 
 {'label': '45th President', 'value': '45th President'},
 
 {'label': 'Syrian Civil War', 'value': 'Syrian Civil War'},
 
-{'label': 'Chelsea Manning\'s', 'value': 'Chelsea Manning\'s'}
+#{'label': 'Chelsea Manning\'s', 'value': 'Chelsea Manning\'s'}
 
 ],
 
